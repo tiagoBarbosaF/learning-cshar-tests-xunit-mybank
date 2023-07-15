@@ -17,11 +17,32 @@ public class ClientRepositoryTests
     }
 
     [Fact]
+    [Trait("Client", "Repository")]
     public void TestGetAllClients()
     {
         var listClients = _repositorio?.ObterTodos();
 
         Assert.NotNull(listClients);
         Assert.Equal(2, listClients?.Count);
+    }
+
+    [Fact]
+    [Trait("Client", "Repository")]
+    public void TestGetClientById()
+    {
+        var client = _repositorio?.ObterPorId(1);
+        
+        Assert.NotNull(client);
+    }
+
+    [Theory]
+    [Trait("Client", "Repository")]
+    [InlineData(1)]
+    [InlineData(2)]
+    public void TestGetClientByManyIds(int id)
+    {
+        var client = _repositorio?.ObterPorId(id);
+        
+        Assert.NotNull(client);
     }
 }

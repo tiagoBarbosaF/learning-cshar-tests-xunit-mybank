@@ -7,7 +7,8 @@ public class MyBankContextTests
     private ByteBankContexto _contexto = new();
     
     [Fact]
-    public void TestContextConectionWithDB()
+    [Trait("Context", "Connection")]
+    public void TestContextConnectionWithDb()
     {
         bool connect;
 
