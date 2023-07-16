@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using MyBank.Dados.Repositorio;
+using MyBank.Dominio.Entidades;
 using MyBank.Dominio.Interfaces.Repositorios;
+using MyBank.Infraestrutura.Tests.Service;
 
 namespace MyBank.Infraestrutura.Tests;
 
@@ -25,7 +28,7 @@ public class AgenciaRepositoryTests
 
         Assert.NotNull(agencias);
 
-        Assert.Equal(1, agencias?.Count);
+        Assert.Equal(2, agencias?.Count);
     }
 
     [Fact]
@@ -52,5 +55,38 @@ public class AgenciaRepositoryTests
     public void TestExceptionGetAgenciaById()
     {
         Assert.Throws<FormatException>(() => _repositorio?.ObterPorId(3));
+    }
+
+    [Fact]
+    [Trait("Agencia", "Repository")]
+    public void TestAddAgenciaMock()
+    {
+        var agencia = new Agencia
+        {
+            Nome = "Agência Central",
+            Identificador = Guid.NewGuid(),
+            Id = 1,
+            Endereco = "Avenida Principal",
+            Numero = 123
+        };
+
+        var mock = new MyBankRepository();
+
+        var added = mock.AddAgencia(agencia);
+
+        Assert.True(added);
+    }
+
+    [Fact]
+    [Trait("Agencia", "Repository")]
+    public void TestGetAgenciaMock()
+    {
+        var myBankMock = new Mock<IMyBankRepository>();
+
+        var mock = myBankMock.Object;
+
+        var list = mock.GetAgencias();
+
+        myBankMock.Verify(agencia => agencia.GetAgencias());
     }
 }
